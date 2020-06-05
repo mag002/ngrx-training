@@ -1,0 +1,13 @@
+:host{
+   ::ng-deep .uk-input{
+        border-color:transparent;
+        &:focus{
+            border-color: #1e87f0;
+        }
+   }
+   .item{
+       a.done{
+        color:green 
+       }
+   }
+}

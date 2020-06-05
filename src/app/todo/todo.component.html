@@ -1,0 +1,24 @@
+<form (submit)="onSubmit($event)">
+    <input class="uk-input" type="text" [value]="" placeholder="Add task"/>
+</form>
+<hr class="uk-divider-icon">
+<ul uk-accordion>
+    <li class="item" *ngFor="let item of list">
+        <a class="uk-accordion-title " [ngClass]="{done:item.completed ? true : false}" href="#">
+            {{item.name}}
+            <span *ngIf="item.completed" uk-icon="icon: check"></span>
+        </a>
+        <div class="uk-accordion-content">
+            <div class="uk-flex">
+                <input class="uk-input" type="text" [value]="item.description"/>
+                <button class="uk-button uk-button-default">
+                    <span uk-icon="icon: close"></span>
+                </button>
+                <button class="uk-button uk-button-primary">
+                    <span uk-icon="icon: check"></span>
+                </button>
+            </div>
+        </div>
+    </li>
+    
+</ul>
