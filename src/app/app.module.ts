@@ -3,19 +3,22 @@ import { NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { TodoComponent } from './todo/todo.component';
+
 import { DetailComponent } from './detail/detail.component';
 import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { reducers, metaReducers } from './reducers';
 import { environment } from '../environments/environment'
+import { TodoModule } from './todo/todo.module';
+import { HttpClientModule } from "@angular/common/http";
+import { EffectsModule } from '@ngrx/effects'
 @NgModule({
   declarations: [
     AppComponent,
-    TodoComponent,
     DetailComponent,
   ],
   imports: [
+    TodoModule,
     BrowserModule,
     AppRoutingModule,
     // StoreModule.forRoot({ tasks: todoReducer.reducer }),
@@ -30,6 +33,8 @@ import { environment } from '../environments/environment'
       }
     }),
     !environment.production ? StoreDevtoolsModule.instrument() : [],
+    HttpClientModule,
+    EffectsModule.forRoot([])
   ],
   providers: [],
   bootstrap: [AppComponent]

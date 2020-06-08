@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { Store } from '@ngrx/store';
+import { Store, select } from '@ngrx/store';
 import { Todo } from 'src/models/todo';
-
+import { TodoState, selectTodo } from './store';
+import * as TodoActions from './store/todo.actions'
+import { TodoService } from '../services/todo.service';
+import { Observable } from 'rxjs';
 @Component({
   selector: 'app-todo',
   templateUrl: './todo.component.html',
@@ -9,8 +12,11 @@ import { Todo } from 'src/models/todo';
 })
 export class TodoComponent implements OnInit {
 
+  todo$: Observable<Todo[]>;
+
   constructor(
-    private store: Store,
+    private store: Store<TodoState>,
+    private todoService: TodoService
 
   ) { }
   public todo: Todo = {
@@ -19,29 +25,34 @@ export class TodoComponent implements OnInit {
     description: "",
     completed: false
   }
-  public list = [
-    {
-      name: "task 1",
-      description: "Task 1 description",
-      completed: true
-    },
-    {
-      name: "task 2",
-      description: "Task 2 description",
-      completed: false
-    },
-    {
-      name: "task 3",
-      description: "Task 3 description",
-      completed: false
-    },
-    {
-      name: "task 4",
-      description: "Task 4 description",
-      completed: false
-    },
-  ]
+  public list: Todo[] = [{
+    id: '1',
+    name: 'abc',
+    completed: false,
+    description: 'abzzz'
+  }]
   public task_input = "New"
+
+
+  ngOnInit(): void {
+    this.store.dispatch(TodoActions.loadTodos())
+    this.loadTodo();
+
+  }
+  loadTodo() {
+    // this.todoService.getTodo().subscribe(
+    //   res => {
+    //     this.store.dispatch(TodoActions.loadTodosSuccess({ todo: res }))
+    //   },
+    //   error => {
+    //     this.store.dispatch(TodoActions.loadTodosFailure({ error }))
+    //     console.log(error)
+    //   }
+    // )
+
+    this.todo$ = this.store.pipe(select(selectTodo))
+
+  }
   onSubmit(event) {
     event.preventDefault();
     this.todo.id = Math.random().toString();
@@ -52,7 +63,4 @@ export class TodoComponent implements OnInit {
     // this.store.select()
 
   }
-  ngOnInit(): void {
-  }
-
 }
